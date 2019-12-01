@@ -22,7 +22,7 @@ services:
       - ./crypto/tlsca/secret.key:/etc/hyperledger/fabric-ca-server/crypto-config/tlsca/secret.key
       - ./fabric-ca-server:/etc/hyperledger/fabric-ca-server/home
     networks:
-      - fabric-devkit-ca
+      - fabric-devkit-ca-basic
 
   ca-client.test:
     build:
@@ -41,8 +41,8 @@ services:
       - ./fabric-ca-server:/opt/fabric-ca-server
       - ./fabric-ca-client-config.yaml:/opt/fabric-ca-client-home/fabric-ca-client-config.yaml
     networks:
-      - fabric-devkit-ca
+      - fabric-devkit-ca-basic
       
 networks:
-  fabric-devkit-ca:
+  fabric-devkit-ca-basic:
     

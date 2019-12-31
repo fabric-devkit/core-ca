@@ -1,4 +1,4 @@
-FROM ubuntu:18.10
+FROM hyperledger/fabric-ca:1.4.4
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		g++ \
@@ -11,10 +11,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates \
         sqlite3
 
-ENV GOPATH /opt/go
-ENV PATH "$PATH:$GOPATH/bin"
 
-RUN go get github.com/hyperledger/fabric-ca/cmd/fabric-ca-client
+
+
 
 
 

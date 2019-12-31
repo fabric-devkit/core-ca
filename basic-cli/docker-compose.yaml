@@ -3,7 +3,7 @@ version: '3'
 services:
 
   tlsca.org1.dev:
-    image: hyperledger/fabric-ca:latest
+    image: hyperledger/fabric-ca:${FABRIC_CA_VERSION}
     container_name: tlsca.org1.dev
     ports:
       - 7054:7054
@@ -42,7 +42,7 @@ services:
       - ./fabric-ca-client-config.yaml:/opt/fabric-ca-client-home/fabric-ca-client-config.yaml
     networks:
       - fabric-devkit-ca-basic
-      
+
 networks:
   fabric-devkit-ca-basic:
     

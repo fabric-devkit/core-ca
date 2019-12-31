@@ -2,6 +2,7 @@
 
 COMMAND=$1
 
+export FABRIC_CA_VERSION=1.4.4
 
 function start(){
     docker-compose -f ./docker-compose.yaml build ca-client.test

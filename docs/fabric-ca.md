@@ -26,6 +26,14 @@ In this demonstrator, you will find the following artefacts:
 
 </figure>
 
+The demonstrator has been verified to work on macOS these versions of Hyperledger Fabric components:
+
+| Component | Version |
+| :-- | :-- |
+| FABRIC_CA | 1.4.4 |
+| macOS | Catalina |
+| Docker | version 19.03.4, build 9013bf5 |
+
 ## How to use this demonstrator
 
 To use it to enroll and register users in the dev network's Fabric CA server please perform the following steps:

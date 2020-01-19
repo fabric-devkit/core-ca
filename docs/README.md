@@ -9,6 +9,7 @@ Please refer to [official documentation (version 1.4)](https://hyperledger-fabri
 | Demonstrator | Description |
 | --- | --- |
 | `basic-cli` |  This uses a combination of `fabric-ca-client` cli, `docker` and `bash scripts` acting as a client node connecting to a instance of `fabric-ca-server` |
+| `two-tiers` | This demonstrates a root and intermediate CA setup |
 
 ## Copyright Notice
 

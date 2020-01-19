@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+
+  ca.root:
+    image: hyperledger/fabric-ca:${FABRIC_CA_VERSION}
+    container_name: ca.root
+    ports:
+      - 7054:7054
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.root
+      - FABRIC_CA_SERVER_TLS_ENABLED=false
+      - FABRIC_LOGGING_SPEC=debug
+    volumes:
+      - ./generated/ca-root-home:/etc/hyperledger/fabric-ca-server
+    command: sh -c "fabric-ca-server start -b admin.root:adminpw -d"
+    networks:
+      - fabric-devkit_two-tiers
+
+  ca.intermediate:
+    image: hyperledger/fabric-ca:${FABRIC_CA_VERSION}
+    container_name: ca.intermediate
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server-config
+      - FABRIC_CA_SERVER_CA_NAME=ica.dummyOrg
+      - FABRIC_CA_SERVER_TLS_ENABLED=false
+      - FABRIC_LOGGING_SPEC=debug
+    ports:
+      - 8054:7054
+    command: sh -c 'fabric-ca-server start -b admin.ica:adminpw -d -u http://ica.dummyOrg:adminpw@ca.root:7054'
+    volumes:
+      - ./generated/icaCerts:/etc/hyperledger/fabric-ca-server
+      - ./generated/icaCerts:/etc/hyperledger/fabric-ca-server-config
+    networks:
+      - fabric-devkit_two-tiers
+
+
+  cli:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ${CLI_IMAGE}:${CLI_NAME_VERSION}
+    container_name: cli
+    tty: true
+    environment: 
+      - FABRIC_CA_CLIENT_HOME=/opt/fabric-ca-client-home
+    working_dir: /opt
+    volumes:
+      - ./scripts:/opt/scripts
+      - ./generated/ca-root-home:/opt/ca-root-home
+    networks:
+      - fabric-devkit_two-tiers
+
+networks:
+  fabric-devkit_two-tiers:
+    

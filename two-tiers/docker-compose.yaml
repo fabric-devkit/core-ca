@@ -35,7 +35,6 @@ services:
     networks:
       - fabric-devkit_two-tiers
 
-
   cli:
     build:
       context: .

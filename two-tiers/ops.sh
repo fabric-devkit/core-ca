@@ -8,32 +8,39 @@ export CLI_IMAGE="fabric-devkit/ca-client-cli"
 export CLI_NAME_VERSION=latest
 export FABRIC_CA_VERSION=1.4.4
 
-function start() {
+function ca() {
     local CMD=$1
-    echo $CMD
     case "$CMD" in
-        root)
+        start)
             docker-compose -f ./docker-compose.yaml up -d ca.root
-            ;;
-        ica)
             docker-compose -f ./docker-compose.yaml up -d ca.intermediate
             ;;
+        stop)
+            docker-compose -f ./docker-compose.yaml down
+            ;;
         *)
-            echo "$APP_NAME start [root | ica]"
+            echo "$APP_NAME ca [start | stop]"
             ;;
     esac
 }
 
-function stop() {
-    docker-compose -f ./docker-compose.yaml down
-}
 
 function cli() {
+    local CMD=$1
 
-    if [[ "$(docker images -q ${CLI_IMAGE}:${CLI_NAME_VERSION} 2> /dev/null)" == "" ]]; then
-        docker-compose -f ./docker-compose.yaml build cli
-    fi
-    docker-compose -f ./docker-compose.yaml run --rm cli /bin/bash
+    case "$CMD" in
+        build)
+            if [[ "$(docker images -q ${CLI_IMAGE}:${CLI_NAME_VERSION} 2> /dev/null)" == "" ]]; then
+                docker-compose -f ./docker-compose.yaml build cli
+            fi
+            ;;
+        start)
+            docker-compose -f ./docker-compose.yaml run --rm cli /bin/bash
+            ;;
+        *)
+            echo "$APP_NAME cli [build | start]"
+            ;;
+    esac
 }
 
 function clean() {
@@ -43,20 +50,17 @@ function clean() {
 }
 
 case "$COMMAND" in
-    start)
-        start $SUBCOMMAND
+    ca)
+        ca $SUBCOMMAND
         ;;
     cli)
         cli $SUBCOMMAND
-        ;;
-    stop)
-        stop
         ;;
     clean)
         clean
         ;;
     *)
-        echo "$APP_NAME [ start | stop | cli | clean]"
+        echo "$APP_NAME [ ca [start | stop] | cli [build | start] | clean]"
         ;;
 esac
 
